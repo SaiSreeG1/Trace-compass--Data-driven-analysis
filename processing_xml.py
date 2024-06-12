@@ -13,12 +13,12 @@ Important tags for the task:
 These tags should be categorized by a 'tid' and shown in the irqs vs time format.
 """
 
-# Combine the descriptions
+
 xml_explanation = f"{xml_structure_description}\n\n{important_tags_description}"
 
 from gpt4all import GPT4All
 
-# Load the Mistral 7B model from the local file using GPT4All
+
 model = GPT4All("mistral-7b-instruct-v0.1.Q4_0.gguf")
 import re
 from gpt4all import GPT4All
@@ -209,13 +209,10 @@ prompt = "Show me the irqs vs time where you store the irq name it should be cat
 # Combine the XML explanation and the prompt with the sanitized XML data
 full_prompt = f"{xml_explanation}\n\nHere is the XML content:\n\n{sanitized_xml_data}\n\n{prompt}\n\nPlease ensure the output XML has a section with irqs vs time where each irq name is categorized by a tid. Maintain the original XSD format."
 
-# Generate the output
 response = model.generate(full_prompt)
 
-# Print the generated response
 print(f"Generated response: {response}")
 
-# Save the modified XML text to a new file
 modified_output_file_path = r'C:\Users\egsuaid\Downloads\Initial\modified_irq_analysis_lttng.xml'
 with open(modified_output_file_path, 'w') as modified_text_file:
     modified_text_file.write(response)
