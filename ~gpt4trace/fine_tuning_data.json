@@ -1,0 +1,16 @@
+[
+    {
+        "prompt": "Show me the statistics of irq_handler_entry -> irq_softirq_raise -> irq_handler_exit -> irq_softirq_entry -> irq_softirq_exit.",
+        "response": {
+            "event_sequence": [
+                "irq_handler_entry",
+                "irq_softirq_raise",
+                "irq_handler_exit",
+                "irq_softirq_entry",
+                "irq_softirq_exit"
+            ],
+            "statistics_type": "sequential",
+            "source_file": "test_valid.xml"
+        }
+    }
+]
