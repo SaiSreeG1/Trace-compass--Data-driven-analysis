@@ -1,0 +1,7 @@
+[
+    {
+        "prompt": "Given the state system 'org.eclipse.tracecompass...', plot the user bandwidth, it is every attribute under the user/* branch.",
+        "response": "Generate a chart to display user bandwidth based on attributes under the user/* branch. Label the x-axis as 'Time' and the y-axis as 'Bandwidth'. Each line should represent a different user attribute, illustrating bandwidth usage over time.",
+        "source_file": "httpdView.xml"
+    }
+]

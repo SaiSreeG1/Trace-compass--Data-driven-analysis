@@ -1,0 +1,176 @@
+Hello, I'm a newbie to the forum. I'm a student in the UK and I'm currently doing a project on the history of the British Empire. I'm looking for some advice on the following:
+
+1. What is the best way to research the history of the British Empire?
+
+2. What is the best way to research the history of the British Empire?
+
+3. What is the best way to research the history of the British Empire?
+
+4. What is the best way to research the history of the British Empire?
+
+5. What is the best way to research the history of the British Empire?
+
+6. What is the best way to research the history of the British Empire?
+
+7. What is the best way to research the history of the British Empire?
+
+8. What is the best way to research the history of the British Empire?
+
+9. What is the best way to research the history of the British Empire?
+
+10. What is the best way to research the history of the British Empire?
+
+11. What is the best way to research the history of the British Empire?
+
+12. What is the best way to research the history of the British Empire?
+
+13. What is the best way to research the history of the British Empire?
+
+14. What is the best way to research the history of the British Empire?
+
+15. What is the best way to research the history of the British Empire?
+
+16. What is the best way to research the history of the British Empire?
+
+17. What is the best way to research the history of the British Empire?
+
+18. What is the best way to research the history of the British Empire?
+
+19. What is the best way to research the history of the British Empire?
+
+20. What is the best way to research the history of the British Empire?
+
+21. What is the best way to research the history of the British Empire?
+
+22. What is the best way to research the history of the British Empire?
+
+23. What is the best way to research the history of the British Empire?
+
+24. What is the best way to research the history of the British Empire?
+
+25. What is the best way to research the history of the British Empire?
+
+26. What is the best way to research the history of the British Empire?
+
+use this xsd format to generate xml files.  <tmfxml xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="xmlDefinition.xsd"> <timeGraphView id="xml.scenarios"> <head> <analysis id="lttng.analysis.irq" /> <label value="Scenarios" /> </head> <definedValue name="PENDING" value="0" color="#CCCCCC" /> <definedValue name="IN_PROGRESS" value="1" color="#00CCFF" /> <definedValue name="MATCHED" value="2" color="#118811" /> <definedValue name="ABANDONED" value="3" color="#EE0000" /> <entry path="scenarios/*"> <display type="self" /> <name type="self" /> <entry path="*"> <display type="constant" value="state" /> <name type="self" /> </entry> </entry> </timeGraphView> <pattern version="0" id="lttng.analysis.irq"> <head> <traceType id="org.eclipse.linuxtools.lttng2.kernel.tracetype" /> <label value="IRQ Analysis" /> <viewLabelPrefix value="IRQ" /> </head> <storedField id="ret" alias="ret" /> <location id="CurrentCPU"> <stateAttribute type="constant" value="CPUs" /> <stateAttribute type="eventField" value="cpu" /> </location> <patternHandler> <test id="test_cpu"> <if> <condition> <stateValue type="query"> <stateAttribute type="constant" value="#CurrentScenario" /> <stateAttribute type="constant" value="cpu" /> </stateValue> <stateValue type="eventField" value="cpu" /> </condition> </if> </test> <action id="irq_handler_entry"> <stateChange> <stateAttribute type="constant" value="#CurrentScenario" /> <stateAttribute type="constant" value="irq" /> <stateValue type="eventField" value="irq" /> </stateChange> <stateChange> <stateAttribute type="constant" value="#CurrentScenario" /> <stateAttribute type="constant" value="cpu" /> <stateValue type="eventField" value="cpu" /> </stateChange> </action> <action id="irq_handler_exit"> <stateChange> <stateAttribute type="constant" value="#CurrentScenario" /> <stateAttribute type="constant" value="irq" /> <stateValue type="eventField" value="irq" /> </stateChange> </action> </patternHandler> </storedField> <definedValue name="PENDING" value="0" color="#CCCCCC" /> <definedValue name="IN_PROGRESS" value="1" color="#00CCFF" /> <definedValue name="MATCHED" value="2" color="#118811" /> <definedValue name="ABANDONED" value="3" color="#EE0000" /> <entry path="scenarios/*"> <display type="self" /> <name type="self" /> <entry path="*"> <display type="constant" value="state" /> <name type="self" /> </entry> </entry> </timeGraphView> <pattern version="0" id="lttng.analysis.irq"> <head> <traceType id="org.eclipse.linuxtools.lttng2.kernel.tracetype" /> <label value="IRQ Analysis" /> <viewLabelPrefix value="IRQ" /> </head> <storedField id="ret" alias="ret" /> <location id="CurrentCPU"> <stateAttribute type="constant" value="CPUs" /> <stateAttribute type="eventField" value="cpu" /> </location> <patternHandler> <test id="test_cpu"> <if> <condition> <stateValue type="query"> <stateAttribute type="constant" value="#CurrentScenario" /> <stateAttribute type="constant" value="cpu" /> </stateValue> <stateValue type="eventField" value="cpu" /> </condition> </if> </test> <action id="irq_handler_entry"> <stateChange> <stateAttribute type="constant" value="#CurrentScenario" /> <stateAttribute type="constant" value="irq" /> <stateValue type="eventField" value="irq" />generate an xml output to 
+The XML file has these key elements:
+- <tmfxml>: Root element.
+- <timeGraphView>: Time graph view with <head>, <definedValue>, and <entry>.
+- <pattern>: Defines analysis pattern with <head>, <storedField>, <location>, and <patternHandler> including <test>, <action>, and <fsm>.
+
+
+
+Important tags for the task:
+- <irq>: Interrupt request.
+- <name>: Name associated with irq.
+- <cpu>: CPU associated with irq.
+These tags should be categorized by a 'tid' and shown in the irqs vs time format.
+
+
+Here is the XML content:
+
+ <tmfxml xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="xmlDefinition.xsd"> <timeGraphView id="xml.scenarios"> <head> <analysis id="lttng.analysis.irq" /> <label value="Scenarios" /> </head> <definedValue name="PENDING" value="0" color="#CCCCCC" /> <definedValue name="IN_PROGRESS" value="1" color="#00CCFF" /> <definedValue name="MATCHED" value="2" color="#118811" /> <definedValue name="ABANDONED" value="3" color="#EE0000" /> <entry path="scenarios/*"> <display type="self" /> <name type="self" /> <entry path="*"> <display type="constant" value="state" /> <name type="self" /> </entry> </entry> </timeGraphView> <pattern version="0" id="lttng.analysis.irq"> <head> <traceType id="org.eclipse.linuxtools.lttng2.kernel.tracetype" /> <label value="IRQ Analysis" /> <viewLabelPrefix value="IRQ" /> </head> <storedField id="ret" alias="ret" /> <location id="CurrentCPU"> <stateAttribute type="constant" value="CPUs" /> <stateAttribute type="eventField" value="cpu" /> </location> <patternHandler> <test id="org.eclipse.linuxtools.lttng2.kernel.test.IRQ" /> <action id="org.eclipse.linuxtools.lttng2.kernel.action.IRQ" /> <fsm id="org.eclipse.linuxtools.lttng2.kernel.fsm.IRQ" /> </patternHandler> </pattern> </timeGraphView> <cpu id="org.eclipse.linuxtools.lttng2.kernel.cpu"> <stateAttribute type="constant" value="0" /> <eventAttribute type="constant" value="IRQ" /> </cpu> </tmfxml>
+
+
+
+The following is the output of the above XML file:
+
+
+
+The following is the output of the above XML file:
+
+
+
+The following is the output of the above XML file:
+
+
+
+The following is the output of the above XML file:
+
+
+
+The following is the output of the above XML file:
+
+
+
+The following is the output of the above XML file:
+
+
+
+The following is the output of the above XML file:
+
+
+
+The following is the output of the above XML file:
+
+
+
+The following is the output of the above XML file:
+
+
+
+The following is the output of the above XML file:
+
+
+
+The following is the output of the above XML file:
+
+
+
+The following is the output of the above XML file:
+
+
+
+The following is the output of the above XML file:
+
+
+
+The following is the output of the above XML file:
+
+
+
+The following is the output of the above XML file:
+
+
+
+The following is the output of the above XML file:
+
+
+
+The following is the output of the above XML file:
+
+
+
+The following is the output of the above XML file:
+
+
+
+The following is the output of the above XML file:
+
+
+
+The following is the output of the above XML file:
+
+
+
+The following is the output of the above XML file:
+
+
+
+The following is the output of the above XML file:
+
+
+
+The following is the output of the above XML file:
+
+
+
+The following is the output of the above XML file:
+
+
+
+The following is the output of the above XML file:
+
+
+
+The following is the output of the above XML
