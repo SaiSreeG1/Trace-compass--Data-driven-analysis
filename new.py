@@ -15,10 +15,10 @@ These tags should be categorized by a 'tid' and shown in the irqs vs time format
 
 xml_explanation = f"{xml_structure_description}\n\n{important_tags_description}"
 
-from ntpath import join
 from gpt4all import GPT4All
 import os
 import tqdm
+
 
 model = GPT4All("mistral-7b-instruct-v0.1.Q4_0.gguf")
 import re
