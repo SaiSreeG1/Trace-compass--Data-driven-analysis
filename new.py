@@ -1,231 +1,132 @@
-xml_structure_description = """
-The XML file has these key elements:
-- <tmfxml>: Root element.
-- <timeGraphView>: Time graph view with <head>, <definedValue>, and <entry>.
-- <pattern>: Defines analysis pattern with <head>, <storedField>, <location>, and <patternHandler> including <test>, <action>, and <fsm>.
-"""
-
-important_tags_description = """
-Important tags for the task:
-- <irq>: Interrupt request.
-- <name>: Name associated with irq.
-- <cpu>: CPU associated with irq.
-These tags should be categorized by a 'tid' and shown in the irqs vs time format.
-"""
-
-xml_explanation = f"{xml_structure_description}\n\n{important_tags_description}"
-
-from gpt4all import GPT4All
-import os
-import tqdm
-
-
-model = GPT4All("mistral-7b-instruct-v0.1.Q4_0.gguf")
 import re
+import yaml
 from gpt4all import GPT4All
+from tqdm import tqdm
+import xml.etree.ElementTree as ET
+from xml.dom import minidom
 
-# Function to sanitize XML data by removing comments and special characters
-def sanitize_xml(xml_data):
-    # Remove comments
-    xml_data = re.sub(r'<!--.*?-->', '', xml_data, flags=re.DOTALL)
-    # Remove newlines and extra spaces
-    xml_data = re.sub(r'\s+', ' ', xml_data)
-    return xml_data
-
-# Your XML data
+# XML content embedded directly in the code
 xml_data = """
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- *****************************************************************************
+ * Copyright (c) 2021 Ericsson
+ *
+ * All rights reserved. This program and the accompanying materials are
+ * made available under the terms of the Eclipse Public License 2.0 which
+ * accompanies this distribution, and is available at
+ * https://www.eclipse.org/legal/epl-2.0/
+ *
+ * SPDX-License-Identifier: EPL-2.0
+ ***************************************************************************** -->
 <tmfxml xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
-        xsi:noNamespaceSchemaLocation="xmlDefinition.xsd">
-    <!-- Timegraph view that show the scenario execution state in time -->
-    <timeGraphView id="xml.scenarios">
+        xsi:noNamespaceSchemaLocation="../../org.eclipse.tracecompass.tmf.analysis.xml.core/src/org/eclipse/tracecompass/tmf/analysis/xml/core/module/xmlDefinition.xsd">
+    <stateProvider version="0"
+                   id="ssh.failed.connections">
         <head>
-            <analysis id="lttng.analysis.irq" />
-            <label value="Scenarios" />
+            <traceType id="custom.txt.trace:Syslog:OpenSSHD" />
+            <label value="Failed connections" />
         </head>
-        <!-- FFA040 -->
-        <definedValue name="PENDING"
-                      value="0"
-                      color="#CCCCCC" />
-        <definedValue name="IN_PROGRESS"
-                      value="1"
-                      color="#00CCFF" />
-        <definedValue name="MATCHED"
-                      value="2"
-                      color="#118811" />
-        <definedValue name="ABANDONED"
-                      value="3"
-                      color="#EE0000" />
-        <!-- Scenario view -->
-        <entry path="scenarios/*">
+        <eventHandler eventName="AUTH FAILURE">
+            <stateChange>
+                <stateAttribute type="eventField"
+                                value="UserID" />
+                <stateAttribute type="eventField"
+                                value="Message" />
+                <stateValue type="int"
+                            value="1"
+                            increment="true" />
+            </stateChange>
+            <stateChange>
+                <stateAttribute type="eventField"
+                                value="UserID" />
+                <stateValue type="int"
+                            value="1"
+                            increment="true" />
+            </stateChange>
+        </eventHandler>
+    </stateProvider>
+    <xyView id="failed.connections">
+        <head>
+            <analysis id="ssh.failed.connections" />
+            <label value="Failed Connections" />
+        </head>
+        <entry path="*"
+               displayType="delta">
             <display type="self" />
-            <name type="self" />
-            <entry path="*">
-                <display type="constant"
-                         value="state" />
-                <name type="self" />
-            </entry>
         </entry>
-    </timeGraphView>
-    <pattern version="0"
-             id="lttng.analysis.irq">
-        <head>
-            <traceType id="org.eclipse.linuxtools.lttng2.kernel.tracetype" />
-            <label value="IRQ Analysis" />
-            <viewLabelPrefix value="IRQ" />
-        </head>
-        <storedField id="ret"
-                     alias="ret" />
-        <location id="CurrentCPU">
-            <stateAttribute type="constant"
-                            value="CPUs" />
-            <stateAttribute type="eventField"
-                            value="cpu" />
-        </location>
-        <patternHandler>
-            <!-- MATCHING INPUTS -->
-            <test id="test_cpu">
-                <if>
-                    <condition>
-                        <stateValue type="query">
-                            <stateAttribute type="constant"
-                                            value="#CurrentScenario" />
-                            <stateAttribute type="constant"
-                                            value="cpu" />
-                        </stateValue>
-                        <stateValue type="eventField"
-                                    value="cpu" />
-                    </condition>
-                </if>
-            </test>
-            <!-- IRQ FSM ACTIONS -->
-            <action id="irq_handler_entry">
-                <stateChange>
-                    <stateAttribute type="constant"
-                                    value="#CurrentScenario" />
-                    <stateAttribute type="constant"
-                                    value="irq" />
-                    <stateValue type="eventField"
-                                value="irq" />
-                </stateChange>
-                <stateChange>
-                    <stateAttribute type="constant"
-                                    value="#CurrentScenario" />
-                    <stateAttribute type="constant"
-                                    value="name" />
-                    <stateValue type="eventField"
-                                value="name" />
-                </stateChange>
-                <stateChange>
-                    <stateAttribute type="constant"
-                                    value="#CurrentScenario" />
-                    <stateAttribute type="constant"
-                                    value="cpu" />
-                    <stateValue type="eventField"
-                                value="cpu" />
-                </stateChange>
-            </action>
-            <action id="irq_handler_exit">
-                <segment>
-                    <segType>
-                        <segName>
-                            <stateValue type="query">
-                                <stateAttribute type="constant"
-                                                value="#CurrentScenario" />
-                                <stateAttribute type="constant"
-                                                value="name" />
-                            </stateValue>
-                        </segName>
-                    </segType>
-                    <segContent>
-                        <segField name="ret"
-                                  type="long">
-                            <stateValue type="eventField"
-                                        value="ret" />
-                        </segField>
-                        <segField name="irq"
-                                  type="long">
-                            <stateValue type="query">
-                                <stateAttribute type="constant"
-                                                value="#CurrentScenario" />
-                                <stateAttribute type="constant"
-                                                value="irq" />
-                            </stateValue>
-                        </segField>
-                        <segField name="cpu"
-                                  type="long">
-                            <stateValue type="eventField"
-                                        value="cpu" />
-                        </segField>
-                    </segContent>
-                </segment>
-            </action>
-            <!-- IRQ FSM -->
-            <fsm id="irq_handler"
-                 initial="wait_irq_entry">
-                <precondition event="irq_handler_*" />
-                <state id="wait_irq_entry">
-                    <transition event="irq_handler_entry"
-                                target="wait_irq_exit"
-                                action="irq_handler_entry" />
-                </state>
-                <state id="wait_irq_exit">
-                    <transition event="irq_handler_exit"
-                                cond="test_cpu"
-                                target="irq"
-                                action="irq_handler_exit" />
-                </state>
-                <final id="irq" />
-            </fsm>
-            <!-- SCHED_SWITCH -->
-            <action id="update_current_thread">
-                <stateChange>
-                    <stateAttribute type="location"
-                                    value="CurrentCPU" />
-                    <stateAttribute type="constant"
-                                    value="Current_thread" />
-                    <stateValue type="eventField"
-                                value="next_tid" />
-                </stateChange>
-            </action>
-            <fsm id="sched_switch"
-                 multiple="false">
-                <precondition event="sched_switch" />
-                <state id="sched_switch">
-                    <transition event="sched_switch"
-                                target="sched_switch"
-                                action="update_current_thread" />
-                </state>
-            </fsm>
-        </patternHandler>
-    </pattern>
+    </xyView>
 </tmfxml>
 """
 
-# Sanitize the XML data
-sanitized_xml_data = sanitize_xml(xml_data)
+# Function to tokenize XML data
+def tokenize_xml(xml_data):
+    """Tokenize the XML data into a sequence of tokens"""
+    tokens = re.findall(r'(<[^>]+>|[^<]+)', xml_data)
+    return tokens
 
-# Define your prompt
-prompt = "Show me the irqs vs time where you store the irq name it should be categorized by a tid."
+# Function to detokenize tokens back to XML
+def detokenize_xml(tokens):
+    """Convert a sequence of tokens back into XML data"""
+    return ''.join(tokens)
 
-# Combine the XML explanation and the prompt with the sanitized XML data
-full_prompt = f"{xml_explanation}\n\nHere is the XML content:\n\n{sanitized_xml_data}\n\n{prompt}\n\nPlease ensure the output XML has a section with irqs vs time where each irq name is categorized by a tid. Maintain the original XSD format."
+# Function to create a simulated attention mask
+def create_attention_mask(tokens):
+    """Create a simulated attention mask for the tokens"""
+    return [1] * len(tokens)
 
-prompts = []
-responses = []
-prompts.append("Hello")
-prompts.append(f"use this xsd format to generate xml files. {sanitized_xml_data}")
-prompts.append(f"generate an xml output to {prompt}")
+# Function to process tokens to YAML using GPT model
+def process_tokens_to_yaml(model, tokens, prompt):
+    """Generate YAML output for the entire token sequence"""
+    token_str = yaml.dump(tokens)
+    full_prompt = f"{prompt}\n\n{token_str}\n\nReturn the content above in a structured YAML format."
+    response = []
+    with model.chat_session():
+        for _ in tqdm(range(1), desc="Processing Tokens to YAML"):
+            response.append(model.generate(full_prompt))
+    return ''.join(response)
 
+# Function to convert YAML content back to token sequence
+def yaml_to_tokens(yaml_content):
+    """Convert YAML content back to a sequence of tokens"""
+    return yaml.safe_load(yaml_content)
 
-with model.chat_session():
-    for prompt_item in tqdm.tqdm(prompts):
-        responses.append(model.generate(prompt_item))
+# Main function
+def main():
+    # Tokenize the XML data
+    tokens = tokenize_xml(xml_data)
 
-print(f"Generated response: {''.join(responses)}")
+    # Create a simulated attention mask
+    attention_mask = create_attention_mask(tokens)
 
-modified_output_file_path = r'modified_irq_analysis_lttng.xml'
-with open(modified_output_file_path, 'w') as modified_text_file:
-    modified_text_file.write(responses[2])
+    # Print the attention mask for debugging
+    print("Attention Mask:", attention_mask)
 
-print(f"Modified XML content has been saved to {modified_output_file_path}")
+    # Initialize the model
+    model = GPT4All(model_name="mistral-7b-instruct-v0.1.Q4_0.gguf", device='cpu')
 
+    # Define the prompt
+    prompt = "Convert the following XML token sequence to YAML format without any modifications."
+
+    # Process the entire token sequence to YAML
+    yaml_output = process_tokens_to_yaml(model, tokens, prompt)
+
+    # Extract YAML from response
+    try:
+        tokens_from_yaml = yaml_to_tokens(yaml_output)
+    except yaml.YAMLError as e:
+        print("Error decoding YAML:", e)
+        print("YAML output received:", yaml_output)
+        return
+
+    # Detokenize the tokens back to XML
+    xml_output = detokenize_xml(tokens_from_yaml)
+
+    # Save the final generated XML to a file
+    modified_output_file_path = r'modified_ssh_failed_connections.xml'
+    with open(modified_output_file_path, 'w', encoding='utf-8') as modified_text_file:
+        modified_text_file.write(xml_output.strip())
+
+    print(f"Modified XML content has been saved to {modified_output_file_path}")
+
+if __name__ == "__main__":
+    main()
