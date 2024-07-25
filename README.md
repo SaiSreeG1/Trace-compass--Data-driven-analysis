@@ -1,40 +1,57 @@
-# Trace Compass Extended Assistant
-
 ## Introduction
 This project aims to enhance data analysis with Trace Compass by generating accurate XML configurations from natural language prompts. Various methods were explored, such as using Hugging Transformers, Holbox AI, and Langchain framework. Finally, the current approach using LLM i.e. Mistral 7B from GPT-4All for natural language processing and FAISS, Sentence transformers for prompt matching was adopted.
 
-## Features
-- Advanced prompt engineering with techniques like Chain of Thought prompting.
-- AI-driven DSL assistance using GPT-4All.
-- Automated generation of XML files from natural language prompts.
-- User-friendly interface with session management, feedback collection, and download options for generated XML files.
-- Efficient prompt matching using FAISS and Sentence Transformers.
-- Ability to import generated XML into Trace Compass for further analysis.
-
-## To use this project, follow these steps:
-1. Start the Streamlit application: streamlit run Interface.py
-2. Open the application in your web browser. You will see a user interface where you can enter prompts and generate XML files.
-3. Enter a natural language prompt in the text area provided.
-4. Click "Generate XML" to generate an XML file based on the entered prompt.
-5. If the generated XML matches an existing prompt in the dataset, it will be retrieved and displayed. If the prompt does not exist, a refined prompt will be generated, and the closest matching XML document will be retrieved and displayed.
-6. You can download the generated XML file by clicking the "Download XML" button.
-
 ## Overview
-This project uses Streamlit for the web interface, GPT-4All for natural language processing, and FAISS with Sentence Transformers for efficient prompt matching. The goal is to generate XML files from natural language prompts for use in Trace Compass.
+This repository contains various branches focused on different aspects of XML processing, prompt refinement, and interface creation using the GPT-4All language model and related technologies. Each branch serves a unique purpose, providing specific functionalities and tools to enhance XML generation and analysis.
 
-## Detailed Explanation of the code (Interface.py)
-1. Environment Configuration: The code sets the environment for CPU-only processing to ensure compatibility and performance.
-2. Loading and Saving Data: JSON files are used to load and save the XML and prompts mapping. This allows the system to persistently store and retrieve data.
-3. Custom LLM Class: A custom class for GPT-4All is defined to handle prompt generation. This includes methods for generating responses and reinitializing the model.
-4. Model Initialization: The GPT-4All model is initialized with a specific model path, and data is loaded from a JSON file.
-5. Creating FAISS Index: FAISS and Sentence Transformers are used to create an index for prompt embeddings. This allows efficient matching of user prompts with existing prompts in the dataset.
-6. Prompt Matching: The code checks if a user prompt exists in the dataset using FAISS. If a match is found, the corresponding XML is retrieved.
-7. Refining Prompts: If no exact match is found, the user prompt is refined using GPT-4All with a Chain of Thought approach to create a more accurate prompt.
-8. Creating Intermediate Representation: The matched XML content is converted into an intermediate representation (IR) for easier manipulation and understanding.
-9. Generating Text from IR: The IR is used to generate a detailed text explanation, which is then converted into an XML fragment.
-10. Streamlit Interface: The user interface is built using Streamlit, allowing users to enter prompts, generate XML, provide feedback, and download the generated XML.
-11. Session Management: Streamlit's session state is used to manage the state of the application, including storing generated XML fragments and user feedback.
-12. Feedback Mechanism: Users can provide feedback on the generated XML, which is used to improve the quality of future outputs.
-13. Reinitializing for New Prompts: The application can be reset for new prompts, clearing the session state and reinitializing the model.
+## Branches and Their Purposes
 
+1. Interface Branch
+Description: The final implementation for creating an interactive interface that generates XML content based on user prompts.
+Key Features:
+Uses Streamlit for a web-based user interface.
+Leverages GPT-4All for prompt processing and XML generation.
+Implements FAISS for efficient prompt matching and document retrieval.
+Supports user feedback and updates the dataset with new XML fragments.
 
+2. Holbox Branch
+Description: Focuses on generating explanations from XML files using HolboxAI's summarizer and regenerating XML files using GPT-4All.
+Key Features:
+Generates human-readable explanations from XML content.
+Regenerates XML files from explanations.
+Processes multiple XML files and stores the results.
+
+3. Few Shot Prompting Branch
+Description: Uses few-shot learning with GPT-4All to generate XML responses based on examples.
+Key Features:
+Provides several few-shot examples to guide the model.
+Sanitizes XML data and generates responses based on prompts.
+Saves generated responses to XML files.
+
+4. Extract Key Tags and Keywords Branch
+Description: Extracts key tags and keywords from XML content for analysis.
+Key Features:
+Traverses XML content to identify important elements and attributes.
+Consolidates extracted information from multiple XML entries.
+Saves the extracted key tags and keywords to a JSON file.
+
+5. Initial Branch
+Description: Contains initial implementations for describing XML structure, sanitizing data, and processing XML with GPT-4All.
+Key Features:
+Describes the structure and important tags of XML files.
+Sanitizes XML data by removing comments and unnecessary spaces.
+Tokenizes XML content and converts it to YAML format and back.
+
+## How to Use
+Installation:
+Clone the repository.
+Navigate to the repository directory.
+Install the required libraries using the provided requirements.txt file or manual installation.
+
+Running the Interface:
+Switch to the Interface branch.
+Run the Streamlit application as described in the branch-specific README.
+
+Using Other Branches:
+Switch to the desired branch (e.g., holbox, few shot prompting, extract key tags and keywords, initial).
+Follow the specific instructions provided in the branch or code comments.
