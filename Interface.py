@@ -150,6 +150,8 @@ st.markdown(
     .spacer {
         height: 20px; /* Adjust the height of the space as needed */
     }
+    div.stButton > button:first-child { background-color: #4CAF50; color: white; }
+    div[data-baseweb="radio"] > label:first-child > div:first-child { background-color: #4CAF50; color: white; }
     </style>
     """,
     unsafe_allow_html=True
@@ -262,6 +264,14 @@ if st.session_state.generated_xml_fragment:
                 st.session_state.show_feedback = False
 
         # Provide a download link for the XML file
+        st.markdown(
+            """
+            <style>
+            div.stDownloadButton > button:first-child { background-color: #4CAF50; color: white; }
+            </style>
+            """,
+            unsafe_allow_html=True
+        )
         st.download_button(
             label="Download XML",
             data=st.session_state.generated_xml_fragment,
@@ -279,8 +289,7 @@ if st.button("New Prompt"):
     llm.reinitialize()  # Reinitialize the LLM model
     st.rerun()  # Use st.rerun() instead of st.experimental_rerun()
 
-
 st.markdown(
-    "<p style='font-size: 12px; color: red;'>The XML content might not be completely correct, check before using it.</p>",
+    "<p style='font-size: 12px; color: red;'>The XML content might not be completely correct, please check before using it.</p>",
     unsafe_allow_html=True
 )
