@@ -1,0 +1,12 @@
+ Here's an example of an XML file that shows the number of IRQs per TID:
+```xml
+<?xml version="1.0" encoding="UTF-8"?>
+<xsl:stylesheet xmlns:xsl="http://www.w3.org/1999/XSL/Transform" version="1.0">
+  <xsl:output method="xml"/>
+  
+  <xsl:template match="/">
+    <tmfxml xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="xmlDefinition.xsd">
+      <timeGraphView id="xml.scenarios">
+        <head>
+          <analysis id="lttng.analysis.irq"/>
+          <label value="IRQs vs Time"/>
