@@ -42,6 +42,21 @@ Describes the structure and important tags of XML files.
 Sanitizes XML data by removing comments and unnecessary spaces.
 Tokenizes XML content and converts it to YAML format and back.
 
+6. Create Dataset Branch
+Description: Focuses on creating and managing datasets used for XML generation and prompt mapping.
+Key Features:
+Loads XML and prompts mapping from JSON files.
+Processes and updates datasets with new XML fragments and prompts.
+Saves updated datasets back to JSON files for use in other branches.
+This branch provides the foundational data required for other branches to generate, refine, and analyze XML content effectively.
+
+7. Fetching XML Branch
+Description: Contains code to load prompts and corresponding XML mappings from a JSON file, process user prompts using the GPT-4All language model, and generate XML content.
+Key Features:
+Loads and processes XML and prompts mapping from JSON files.
+Uses the GPT-4All model to generate XML content based on user inputs and existing mappings.
+Saves generated XML to files for further use.
+
 ## How to Use
 Installation:
 Clone the repository.
