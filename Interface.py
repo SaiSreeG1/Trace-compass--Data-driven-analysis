@@ -135,8 +135,7 @@ def get_base64_image(image_path):
     with open(image_path, "rb") as image_file:
         return base64.b64encode(image_file.read()).decode()
 
-image_path = "C:/Users/egsuaid/Downloads/1.jpg"
-base64_image = get_base64_image(image_path)
+
 
 st.markdown(
     """
