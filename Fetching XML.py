@@ -38,7 +38,7 @@ def save_xml_to_file(xml_content, output_file):
         file.write(xml_content)
 
 # Example usage
-file_path = r'C:\Users\egsuaid\OneDrive - Ericsson\Documents\gpt4trace\dataset.json'  # Path to your JSON file
+file_path = r'dataset.json'  # Path to your JSON file
 prompts_xml_mapping = load_prompts_xml_mapping(file_path)
 
 user_prompt = "Analyze kernel Linux state system with events like 'exit_syscall', 'irq_handler_entry', and 'sched_switch', updating status of CPUs and threads accordingly."
