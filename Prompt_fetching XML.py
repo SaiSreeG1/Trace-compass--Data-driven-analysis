@@ -36,7 +36,7 @@ model_path = "mistral-7b-instruct-v0.1.Q4_0"
 llm = GPT4AllLLM(model_path)
 
 # Load data
-file_path = r'C:\Users\egsuaid\OneDrive - Ericsson\Documents\gpt4trace\trans_dataset.json'
+file_path = r'trans_dataset.json'
 prompts_xml_mapping = load_prompts_xml_mapping(file_path)
 
 # Create FAISS index
